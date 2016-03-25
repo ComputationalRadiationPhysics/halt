@@ -86,6 +86,6 @@ namespace foobar {
             Data real_, imag_;
         };
 
-    }  // namespace types
+    }  // namespace mem
 
 }  // namespace foobar

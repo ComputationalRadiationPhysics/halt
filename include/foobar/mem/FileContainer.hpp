@@ -157,7 +157,7 @@ namespace foobar {
             }
         };
 
-    }  // namespace types
+    }  // namespace mem
 
     namespace traits {
 

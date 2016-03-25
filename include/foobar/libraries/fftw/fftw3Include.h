@@ -1,5 +1,5 @@
 /*
- * Workaround NVCC pretending to be gcc but not supporting float164
+ * Workaround NVCC pretending to be gcc but not supporting float128
  * https://github.com/FFTW/fftw3/issues/18
  */
 #ifdef __CUDACC__
