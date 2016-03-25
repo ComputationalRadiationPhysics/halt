@@ -41,10 +41,10 @@ namespace types {
         {
             policies::GetExtents<T_Data> dataExtents(data);
             Vec<numDims> offsets = GetRangeOffset<T_Range, T_Data>::get(range);
-            Vec<numDims> extents;
+            Vec<numDims> tmpExtents;
             for(unsigned i=0; i<numDims; i++)
-                extents[i] = dataExtents[i] - offsets[i];
-            return extents;
+                tmpExtents[i] = dataExtents[i] - offsets[i];
+            return tmpExtents;
         }
     };
 
@@ -84,14 +84,14 @@ namespace types {
         static constexpr bool isOrigin = std::is_same<Offset, Origin>::value;
         static constexpr bool isFullSize = std::is_same<Extents, FullSize>::value;
 
-        Range(const T_Offset& offset = T_Offset(), const T_Extents& extents = T_Extents()): offset(offset), extents(extents){}
+        Range(const T_Offset& rOffset = T_Offset(), const T_Extents& rExtents = T_Extents()): offset(rOffset), extents(rExtents){}
     };
 
     template< class T_Offset = Origin, class T_Extents = FullSize >
     Range< T_Offset, T_Extents >
-    makeRange(const T_Offset& offset = T_Offset(), const T_Extents& extents = T_Extents())
+    makeRange(const T_Offset& rOffset = T_Offset(), const T_Extents& rExtents = T_Extents())
     {
-        return Range< T_Offset, T_Extents >(offset, extents);
+        return Range< T_Offset, T_Extents >(rOffset, rExtents);
     }
 
 }  // namespace types

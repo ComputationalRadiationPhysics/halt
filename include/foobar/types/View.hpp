@@ -56,8 +56,8 @@ namespace types {
          * @param extents New extents
          * @param acc Accessor to access the base class
          */
-        View(ParamType base, const Extents& offsets, const Extents& extents, const BaseAccessor& acc = BaseAccessor()):
-            base_(static_cast<ParamType>(base)), acc_(acc), offsets_(offsets), extents(extents)
+        View(ParamType base, const Extents& offsets, const Extents& rExtents, const BaseAccessor& acc = BaseAccessor()):
+            base_(static_cast<ParamType>(base)), acc_(acc), offsets_(offsets), extents(rExtents)
         {
             policies::GetExtents<Base> bExtents(base_);
             for(unsigned i=0; i<numDims; ++i)
