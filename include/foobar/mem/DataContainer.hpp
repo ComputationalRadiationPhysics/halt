@@ -159,7 +159,7 @@ namespace foobar {
                  }
 
                  static size_t
-                 getMemSize(const DataContainer& container, const T& data)
+                 getMemSize(const DataContainer& /*container*/, const T& data)
                  {
                      return traits::getMemSize(data);
                  }
@@ -175,7 +175,7 @@ namespace foobar {
                  }
 
                  static size_t
-                 getMemSize(const DataContainer& container, const T* data)
+                 getMemSize(const DataContainer& container, const T* /*data*/)
                  {
                      return policies::getNumElements(container, false) * sizeof(T);
                  }

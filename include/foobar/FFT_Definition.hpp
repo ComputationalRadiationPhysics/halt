@@ -172,7 +172,7 @@ namespace foobar {
              */
             template< typename T_Wrapper >
             static FFT_InplaceOutput<T_Wrapper>
-            create(T_Wrapper& fftInput, unsigned fullSizeLastDim)
+            create(T_Wrapper& fftInput, unsigned /*fullSizeLastDim*/)
             {
                 static_assert(std::is_same< typename T_Wrapper::FFT_Def, FFT_Def >::value, "Wrong wrapper passed in!");
 

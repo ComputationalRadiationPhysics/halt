@@ -43,7 +43,7 @@ namespace types {
         InstanceType base_;
         BaseAccessor acc_;
         Extents offsets_, extents;
-        friend class policies::GetExtents<View>;
+        friend struct policies::GetExtents<View>;
 
     public:
 

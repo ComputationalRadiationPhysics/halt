@@ -18,7 +18,7 @@ namespace policies {
     {
         template< class T_Index >
         std::enable_if_t< std::is_integral<std::remove_reference_t<T_Index>>::value, size_t >
-        operator()(T_Index&& idx, const T_Data& data) const
+        operator()(T_Index&& idx, const T_Data& /*data*/) const
         {
             return idx;
         }
@@ -42,7 +42,7 @@ namespace policies {
     {
         template< class T_Index >
         std::enable_if_t< std::is_integral<T_Index>::value, size_t >
-        operator()(T_Index&& idx, const T_Data& data) const
+        operator()(T_Index&& idx, const T_Data& /*data*/) const
         {
             return idx;
         }

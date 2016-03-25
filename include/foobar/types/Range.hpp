@@ -54,7 +54,7 @@ namespace types {
         static constexpr unsigned numDims = traits::NumDims<T_Data>::value;
 
         static typename T_Range::Extents
-        get(const T_Range& range, const T_Data& data)
+        get(const T_Range& range, const T_Data& /*data*/ )
         {
             return range.extents;
         }

@@ -114,7 +114,7 @@ namespace types{
         using type = T;
 
         constexpr T
-        operator[](unsigned dim)
+        operator[](unsigned dim) const
         {
             return (dim<numDims) ? T_val : throw std::logic_error("Out of range");
         }
