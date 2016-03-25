@@ -48,25 +48,25 @@ namespace mem {
         friend struct policies::GetExtents<PlainPtrWrapper>;
 
         template<typename T_Extents>
-        PlainPtrWrapper(Pointer ptr, T_Extents&& extents): Parent(ptr, extents)
+        PlainPtrWrapper(Pointer ptr, T_Extents&& rExtents): Parent(ptr, rExtents)
         {
             static_assert(!isStrided, "You need to specify the strides!");
         }
 
         template<typename T_Extents>
-        PlainPtrWrapper(IntegralType* ptr, T_Extents&& extents):
-            PlainPtrWrapper(policies::safe_ptr_cast<Pointer>(ptr), extents)
+        PlainPtrWrapper(IntegralType* ptr, T_Extents&& rExtents):
+            PlainPtrWrapper(policies::safe_ptr_cast<Pointer>(ptr), rExtents)
         {}
 
         template<typename T_Extents, typename T_Strides>
-        PlainPtrWrapper(Pointer ptr, T_Extents&& extents, T_Strides&& strides): Parent(ptr, extents, strides)
+        PlainPtrWrapper(Pointer ptr, T_Extents&& rExtents, T_Strides&& strides): Parent(ptr, rExtents, strides)
         {
             static_assert(isStrided, "You cannot specify strides!!");
         }
 
         template<typename T_Extents, typename T_Strides>
-        PlainPtrWrapper(IntegralType* ptr, T_Extents&& extents, T_Strides&& strides):
-            PlainPtrWrapper(policies::safe_ptr_cast<Pointer>(ptr), extents, strides)
+        PlainPtrWrapper(IntegralType* ptr, T_Extents&& rExtents, T_Strides&& strides):
+            PlainPtrWrapper(policies::safe_ptr_cast<Pointer>(ptr), rExtents, strides)
         {}
 
         template< class T_Index >

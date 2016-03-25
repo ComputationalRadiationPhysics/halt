@@ -53,7 +53,7 @@ namespace accessors {
         const T_Delimiters delimiters_ = T_Delimiters();
 
         template< class T_Index, class T_Stream, typename T_Value >
-        void operator()(const T_Index& idx, T_Stream& stream, T_Value&& value)
+        void operator()(const T_Index& /*idx*/, T_Stream& stream, T_Value&& value)
         {
             stream << std::forward<T_Value>(value);
         }
