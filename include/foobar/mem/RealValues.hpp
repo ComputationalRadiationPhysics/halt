@@ -15,5 +15,5 @@ namespace mem {
         using Parent::Parent;
     };
 
-}  // namespace types
+}  // namespace mem
 }  // namespace foobar

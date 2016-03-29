@@ -49,10 +49,10 @@ namespace foobar {
              * @param extents Extents of the container
              */
             template<typename T_Extents>
-            DataContainer(T_Extents&& extents)
+            DataContainer(T_Extents&& rExtents)
             {
                 static_assert(traits::NumDims<T_Extents>::value >= numDims, "Wrong extents");
-                allocData(extents);
+                allocData(rExtents);
             }
 
             /**
@@ -61,11 +61,11 @@ namespace foobar {
              * @param extents Extents of the container
              */
             template<typename T_Extents>
-            DataContainer(const Memory& data, T_Extents&& extents): data(data)
+            DataContainer(const Memory& rData, T_Extents&& rExtents): data(rData)
             {
                 static_assert(traits::NumDims<T_Extents>::value >= numDims, "Wrong extents");
                 for(unsigned i = 0; i < numDims; i++)
-                    this->extents[i] = extents[i];
+                    this->extents[i] = rExtents[i];
             }
 
             /**
@@ -74,11 +74,11 @@ namespace foobar {
              * @param extents Extents of the container
              */
             template<typename T_Extents>
-            DataContainer(Memory&& data, T_Extents&& extents): data(std::move(data))
+            DataContainer(Memory&& rData, T_Extents&& rExtents): data(std::move(rData))
             {
                 static_assert(traits::NumDims<T_Extents>::value >= numDims, "Wrong extents");
                 for(unsigned i = 0; i < numDims; i++)
-                    this->extents[i] = extents[i];
+                    this->extents[i] = rExtents[i];
             }
 
             template< typename T_Idx >
@@ -99,22 +99,22 @@ namespace foobar {
 
             template<typename T_Extents>
             void
-            setData(T_Extents&& extents, const Memory& data)
+            setData(T_Extents&& rExtents, const Memory& rData)
             {
                 static_assert(traits::NumDims<T_Extents>::value >= numDims, "Wrong extents");
                 for(unsigned i = 0; i < numDims; i++)
-                    this->extents[i] = extents[i];
-                this->data = data;
+                    this->extents[i] = rExtents[i];
+                this->data = rData;
             }
 
             template<typename T_Extents>
             void
-            setData(T_Extents&& extents, Memory&& data)
+            setData(T_Extents&& rExtents, Memory&& rData)
             {
                 static_assert(traits::NumDims<T_Extents>::value >= numDims, "Wrong extents");
                 for(unsigned i = 0; i < numDims; i++)
-                    this->extents[i] = extents[i];
-                this->data = std::move(data);
+                    this->extents[i] = rExtents[i];
+                this->data = std::move(rData);
             }
 
             /**
@@ -124,11 +124,11 @@ namespace foobar {
               */
              template<typename T_Extents>
              void
-             allocData(T_Extents&& extents)
+             allocData(T_Extents&& rExtents)
              {
                  static_assert(traits::NumDims<T_Extents>::value >= numDims, "Wrong extents");
                  for(unsigned i = 0; i < numDims; i++)
-                     this->extents[i] = extents[i];
+                     this->extents[i] = rExtents[i];
                  data.allocData(policies::getNumElements(*this, false));
              }
 
@@ -159,7 +159,7 @@ namespace foobar {
                  }
 
                  static size_t
-                 getMemSize(const DataContainer& container, const T& data)
+                 getMemSize(const DataContainer& /*container*/, const T& data)
                  {
                      return traits::getMemSize(data);
                  }
@@ -175,7 +175,7 @@ namespace foobar {
                  }
 
                  static size_t
-                 getMemSize(const DataContainer& container, const T* data)
+                 getMemSize(const DataContainer& container, const T* /*data*/)
                  {
                      return policies::getNumElements(container, false) * sizeof(T);
                  }
@@ -222,11 +222,11 @@ namespace foobar {
              * @param strides Strides of the container
              */
             template<typename T_Extents, typename T_Strides>
-            DataContainer(T_Extents&& extents, T_Strides&& strides): Parent(extents)
+            DataContainer(T_Extents&& rExtents, T_Strides&& rStrides): Parent(rExtents)
             {
                 static_assert(traits::NumDims<T_Strides>::value >= numDims, "Wrong strides");
                 for(unsigned i = 0; i < numDims; i++)
-                    this->strides[i] = strides[i];
+                    this->strides[i] = rStrides[i];
             }
 
             /**
@@ -235,11 +235,12 @@ namespace foobar {
              * @param extents Extents of the container
              */
             template<typename T_Extents, typename T_Strides>
-            DataContainer(const Memory& data, T_Extents&& extents, T_Strides&&): Parent(data, extents)
+            DataContainer(const Memory& rData, T_Extents&& rExtents, T_Strides&& rStrides)
+            : Parent(rData, rExtents)
             {
                 static_assert(traits::NumDims<T_Strides>::value >= numDims, "Wrong strides");
                 for(unsigned i = 0; i < numDims; i++)
-                    this->strides[i] = strides[i];
+                    this->strides[i] = rStrides[i];
             }
 
             /**
@@ -248,7 +249,7 @@ namespace foobar {
              * @param extents Extents of the container
              */
             template<typename T_Extents, typename T_Strides>
-            DataContainer(Memory&& data, T_Extents&& extents, T_Strides&&): Parent(std::move(data), extents)
+            DataContainer(Memory&& rData, T_Extents&& extents, T_Strides&&): Parent(std::move(rData), extents)
             {
                 static_assert(traits::NumDims<T_Strides>::value >= numDims, "Wrong strides");
                 for(unsigned i = 0; i < numDims; i++)

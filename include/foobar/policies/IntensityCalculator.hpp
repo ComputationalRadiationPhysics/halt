@@ -118,5 +118,5 @@ namespace policies {
         calculator(input, output);
     }
 
-}  // namespace algorithm
+}  // namespace policies
 }  // namespace foobar

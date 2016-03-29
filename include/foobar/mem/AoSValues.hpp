@@ -117,5 +117,5 @@ namespace detail {
     };
 
 }  // namespace detail
-}  // namespace types
+}  // namespace mem
 }  // namespace foobar

@@ -188,9 +188,10 @@ namespace tiffWriter {
 
         template<typename T, typename Allocator>
         static void
-        save(bool saveAsRGB, TIFF* handle, T* data, const Allocator& alloc, unsigned w, unsigned h)
+        save(bool /*saveAsRGB*/, TIFF* handle, T* data, const Allocator& /*alloc*/, unsigned w, unsigned h)
         {
-            if(sizeof(T)*w != TIFFScanlineSize(handle))
+            assert( TIFFScanlineSize(handle) >= 0 );
+            if( sizeof(T)*w != (unsigned) TIFFScanlineSize(handle) )
                 throw FormatException("Scanline size is unexpected");
             for (unsigned y = 0; y < h; y++)
             {

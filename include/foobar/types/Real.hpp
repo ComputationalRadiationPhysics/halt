@@ -24,5 +24,5 @@ namespace traits {
     template< typename T >
     struct IsBinaryCompatibleImpl< types::Real<T>, T >: std::true_type{};
 
-}  // namespace policies
+}  // namespace traits
 }  // namespace foobar
