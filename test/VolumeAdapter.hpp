@@ -17,8 +17,8 @@
 #pragma once
 
 #include "Volume.hpp"
-#include "libLiFFT/traits/NumDims.hpp"
-#include "libLiFFT/policies/GetExtents.hpp"
+#include "liFFT/traits/NumDims.hpp"
+#include "liFFT/policies/GetExtents.hpp"
 
 template<typename T>
 class VolumeAdapter{

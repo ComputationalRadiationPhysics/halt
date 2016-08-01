@@ -19,10 +19,10 @@
 #include "policyExample.hpp"
 #include <chrono>
 #include <vector>
-#include "libLiFFT/mem/DataContainer.hpp"
-#include "libLiFFT/mem/RealValues.hpp"
-#include "libLiFFT/mem/ComplexAoSValues.hpp"
-#include "libLiFFT/mem/ComplexSoAValues.hpp"
+#include "liFFT/mem/DataContainer.hpp"
+#include "liFFT/mem/RealValues.hpp"
+#include "liFFT/mem/ComplexAoSValues.hpp"
+#include "liFFT/mem/ComplexSoAValues.hpp"
 
 
 using millisecs = std::chrono::duration<unsigned long long, std::milli>;

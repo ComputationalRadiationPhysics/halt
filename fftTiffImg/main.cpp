@@ -14,27 +14,27 @@
  * License along with libLiFFT.  If not, see <www.gnu.org/licenses/>.
  */
  
-#include <iostream>
-#include <string>
-#include <boost/program_options.hpp>
 #include "tiffWriter/image.hpp"
 #include "tiffWriter/traitsAndPolicies.hpp"
-#include "libLiFFT/FFT.hpp"
+#include "liFFT/FFT.hpp"
 #if defined(WITH_CUDA)
-#   include "libLiFFT/libraries/cuFFT/cuFFT.hpp"
+#   include "liFFT/libraries/cuFFT/cuFFT.hpp"
     using FFT_LIB = LiFFT::libraries::cuFFT::CuFFT<>;
 #else
-#   include "libLiFFT/libraries/fftw/FFTW.hpp"
+#   include "liFFT/libraries/fftw/FFTW.hpp"
     using FFT_LIB = LiFFT::libraries::fftw::FFTW<>;
 #endif
-#include "libLiFFT/policies/Copy.hpp"
-#include "libLiFFT/types/SymmetricWrapper.hpp"
-#include "libLiFFT/accessors/TransformAccessor.hpp"
-#include "libLiFFT/accessors/TransposeAccessor.hpp"
-#include "libLiFFT/policies/CalcIntensityFunctor.hpp"
-#include "libLiFFT/types/View.hpp"
-#include "libLiFFT/types/SliceView.hpp"
+#include "liFFT/policies/Copy.hpp"
+#include "liFFT/types/SymmetricWrapper.hpp"
+#include "liFFT/accessors/TransformAccessor.hpp"
+#include "liFFT/accessors/TransposeAccessor.hpp"
+#include "liFFT/policies/CalcIntensityFunctor.hpp"
+#include "liFFT/types/View.hpp"
+#include "liFFT/types/SliceView.hpp"
+#include <boost/program_options.hpp>
 #include <chrono>
+#include <iostream>
+#include <string>
 
 namespace po = boost::program_options;
 using std::string;

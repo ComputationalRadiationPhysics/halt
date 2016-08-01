@@ -20,7 +20,7 @@
 #include <limits>
 #include <algorithm>
 #include <array>
-#include "libLiFFT/c++14_types.hpp"
+#include "liFFT/c++14_types.hpp"
 
 namespace tiffWriter {
 

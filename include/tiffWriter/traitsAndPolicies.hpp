@@ -17,14 +17,14 @@
 #pragma once
 
 #include "tiffWriter/image.hpp"
-#include "libLiFFT/traits/NumDims.hpp"
-#include "libLiFFT/traits/IdentityAccessor.hpp"
-#include "libLiFFT/traits/IsComplex.hpp"
-#include "libLiFFT/traits/IsStrided.hpp"
-#include "libLiFFT/accessors/VolumeAccessor.hpp"
-#include "libLiFFT/policies/GetExtents.hpp"
-#include "libLiFFT/types/Vec.hpp"
-#include "libLiFFT/util.hpp"
+#include "liFFT/traits/NumDims.hpp"
+#include "liFFT/traits/IdentityAccessor.hpp"
+#include "liFFT/traits/IsComplex.hpp"
+#include "liFFT/traits/IsStrided.hpp"
+#include "liFFT/accessors/VolumeAccessor.hpp"
+#include "liFFT/policies/GetExtents.hpp"
+#include "liFFT/types/Vec.hpp"
+#include "liFFT/util.hpp"
 
 namespace LiFFT {
 namespace traits {

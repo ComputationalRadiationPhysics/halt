@@ -17,9 +17,9 @@
 #pragma once
 
 #include "testDefines.hpp"
-#include "libLiFFT/traits/IdentityAccessor.hpp"
-#include "libLiFFT/traits/IsComplex.hpp"
-#include "libLiFFT/policies/Loop.hpp"
+#include "liFFT/traits/IdentityAccessor.hpp"
+#include "liFFT/traits/IsComplex.hpp"
+#include "liFFT/policies/Loop.hpp"
 #include <boost/test/unit_test.hpp>
 #include <cmath>
 #include <iostream>

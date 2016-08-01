@@ -16,12 +16,12 @@
  
 #pragma once
 
-#include "libLiFFT/traits/IntegralType.hpp"
-#include "libLiFFT/traits/NumDims.hpp"
-#include "libLiFFT/traits/IsComplex.hpp"
-#include "libLiFFT/traits/IsStrided.hpp"
-#include "libLiFFT/traits/IsAoS.hpp"
-#include "libLiFFT/policies/GetExtents.hpp"
+#include "liFFT/traits/IntegralType.hpp"
+#include "liFFT/traits/NumDims.hpp"
+#include "liFFT/traits/IsComplex.hpp"
+#include "liFFT/traits/IsStrided.hpp"
+#include "liFFT/traits/IsAoS.hpp"
+#include "liFFT/policies/GetExtents.hpp"
 
 template< typename T = double >
 class Volume{

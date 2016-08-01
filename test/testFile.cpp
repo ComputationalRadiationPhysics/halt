@@ -16,14 +16,14 @@
  
 #include "testUtils.hpp"
 
-#include "libLiFFT/mem/DataContainer.hpp"
-#include "libLiFFT/mem/FileContainer.hpp"
-#include "libLiFFT/accessors/ImageAccessor.hpp"
+#include "liFFT/mem/DataContainer.hpp"
+#include "liFFT/mem/FileContainer.hpp"
+#include "liFFT/accessors/ImageAccessor.hpp"
 #include "tiffWriter/image.hpp"
 #include "tiffWriter/traitsAndPolicies.hpp"
-#include "libLiFFT/FFT.hpp"
-#include "libLiFFT/generateData.hpp"
-#include "libLiFFT/accessors/TransposeAccessor.hpp"
+#include "liFFT/FFT.hpp"
+#include "liFFT/generateData.hpp"
+#include "liFFT/accessors/TransposeAccessor.hpp"
 #include <boost/test/unit_test.hpp>
 
 

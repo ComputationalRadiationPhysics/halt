@@ -16,13 +16,13 @@
  
 #pragma once
 
-#include "libLiFFT/traits/IntegralType.hpp"
-#include "libLiFFT/traits/IsComplex.hpp"
-#include "libLiFFT/traits/IsAoS.hpp"
-#include "libLiFFT/policies/GetExtents.hpp"
-#include "libLiFFT/policies/GetStrides.hpp"
-#include "libLiFFT/accessors/DataContainerAccessor.hpp"
-#include "libLiFFT/policies/CalcIntensity.hpp"
+#include "liFFT/traits/IntegralType.hpp"
+#include "liFFT/traits/IsComplex.hpp"
+#include "liFFT/traits/IsAoS.hpp"
+#include "liFFT/policies/GetExtents.hpp"
+#include "liFFT/policies/GetStrides.hpp"
+#include "liFFT/accessors/DataContainerAccessor.hpp"
+#include "liFFT/policies/CalcIntensity.hpp"
 
 namespace LiFFT {
 

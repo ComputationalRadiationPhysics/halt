@@ -14,6 +14,6 @@
  * License along with libLiFFT.  If not, see <www.gnu.org/licenses/>.
  */
 
-#include "libLiFFT/FFT.hpp"
+#include "liFFT/FFT.hpp"
 int main( void ) { return 0; };
 

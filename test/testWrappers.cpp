@@ -15,10 +15,10 @@
  */
 
 #include "testUtils.hpp"
-#include "libLiFFT/FFT.hpp"
-#include "libLiFFT/mem/DataContainer.hpp"
-#include "libLiFFT/types/View.hpp"
-#include "libLiFFT/types/SliceView.hpp"
+#include "liFFT/FFT.hpp"
+#include "liFFT/mem/DataContainer.hpp"
+#include "liFFT/types/View.hpp"
+#include "liFFT/types/SliceView.hpp"
 #include <boost/test/unit_test.hpp>
 #include <boost/mpl/list.hpp>
 #include <boost/mpl/int.hpp>

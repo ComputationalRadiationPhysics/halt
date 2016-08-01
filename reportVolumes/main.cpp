@@ -14,29 +14,28 @@
  * License along with libLiFFT.  If not, see <www.gnu.org/licenses/>.
  */
  
-#include <iostream>
-#include <string>
-
 #include "tiffWriter/image.hpp"
 #include "tiffWriter/traitsAndPolicies.hpp"
-#include "libLiFFT/FFT.hpp"
+#include "liFFT/FFT.hpp"
 #if defined(WITH_CUDA)
-#   include "libLiFFT/libraries/cuFFT/cuFFT.hpp"
+#   include "liFFT/libraries/cuFFT/cuFFT.hpp"
     using FFT_LIB = LiFFT::libraries::cuFFT::CuFFT<>;
 #else
-#   include "libLiFFT/libraries/fftw/FFTW.hpp"
+#   include "liFFT/libraries/fftw/FFTW.hpp"
     using FFT_LIB = LiFFT::libraries::fftw::FFTW<>;
 #endif
 
-#include "libLiFFT/policies/Copy.hpp"
-#include "libLiFFT/accessors/TransformAccessor.hpp"
-#include "libLiFFT/accessors/TransposeAccessor.hpp"
-#include "libLiFFT/policies/CalcIntensityFunctor.hpp"
-#include "libLiFFT/generateData.hpp"
-#include "libLiFFT/types/SliceView.hpp"
+#include "liFFT/policies/Copy.hpp"
+#include "liFFT/accessors/TransformAccessor.hpp"
+#include "liFFT/accessors/TransposeAccessor.hpp"
+#include "liFFT/policies/CalcIntensityFunctor.hpp"
+#include "liFFT/generateData.hpp"
+#include "liFFT/types/SliceView.hpp"
 
 #include <boost/program_options.hpp>
 #include <boost/filesystem.hpp>
+#include <iostream>
+#include <string>
 #include <cmath>
 
 namespace po = boost::program_options;

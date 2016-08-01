@@ -15,10 +15,10 @@
  */
  
 #include "testUtils.hpp"
-#include "libLiFFT/FFT.hpp"
-#include "libLiFFT/generateData.hpp"
-#include "libLiFFT/types/View.hpp"
-#include "libLiFFT/types/SliceView.hpp"
+#include "liFFT/FFT.hpp"
+#include "liFFT/generateData.hpp"
+#include "liFFT/types/View.hpp"
+#include "liFFT/types/SliceView.hpp"
 #include <boost/test/unit_test.hpp>
 #include <boost/test/floating_point_comparison.hpp>
 #include <cmath>

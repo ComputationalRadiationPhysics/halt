@@ -20,10 +20,10 @@
 #include <string>
 #include "tiffWriter/image.hpp"
 #include "tiffWriter/traitsAndPolicies.hpp"
-#include "libLiFFT/traits/IdentityAccessor.hpp"
-#include "libLiFFT/policies/Copy.hpp"
-#include "libLiFFT/types/AddDimsWrapper.hpp"
-#include "libLiFFT/accessors/StreamAccessor.hpp"
+#include "liFFT/traits/IdentityAccessor.hpp"
+#include "liFFT/policies/Copy.hpp"
+#include "liFFT/types/AddDimsWrapper.hpp"
+#include "liFFT/accessors/StreamAccessor.hpp"
 
 std::string
 remove_extension(const std::string& filename) {

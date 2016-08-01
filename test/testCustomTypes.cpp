@@ -16,19 +16,19 @@
  
 #include "testUtils.hpp"
 
-#include "libLiFFT/traits/IsComplex.hpp"
-#include "libLiFFT/traits/IsBinaryCompatible.hpp"
-#include "libLiFFT/traits/IntegralType.hpp"
-#include "libLiFFT/FFT.hpp"
+#include "liFFT/traits/IsComplex.hpp"
+#include "liFFT/traits/IsBinaryCompatible.hpp"
+#include "liFFT/traits/IntegralType.hpp"
+#include "liFFT/FFT.hpp"
 #include "Volume.hpp"
-#include "libLiFFT/accessors/VolumeAccessor.hpp"
+#include "liFFT/accessors/VolumeAccessor.hpp"
 #ifndef WITH_CUDA
-#   include "libLiFFT/libraries/fftw/fftw3Include.h"
+#   include "liFFT/libraries/fftw/fftw3Include.h"
 #endif
-#include "libLiFFT/generateData.hpp"
-#include "libLiFFT/policies/Copy.hpp"
-#include "libLiFFT/traits/IdentityAccessor.hpp"
-#include "libLiFFT/types/SliceView.hpp"
+#include "liFFT/generateData.hpp"
+#include "liFFT/policies/Copy.hpp"
+#include "liFFT/traits/IdentityAccessor.hpp"
+#include "liFFT/types/SliceView.hpp"
 #include <boost/test/unit_test.hpp>
 #include <type_traits>
 #include <iostream>

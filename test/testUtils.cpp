@@ -15,17 +15,17 @@
  */
  
 #include "testUtils.hpp"
-#include "libLiFFT/types/Vec.hpp"
-#include "libLiFFT/FFT.hpp"
-#include "libLiFFT/generateData.hpp"
-#include "libLiFFT/accessors/TransformAccessor.hpp"
-#include "libLiFFT/accessors/TransposeAccessor.hpp"
-#include "libLiFFT/types/SymmetricWrapper.hpp"
-#include "libLiFFT/accessors/StreamAccessor.hpp"
-#include "libLiFFT/types/AddDimsWrapper.hpp"
-#include "libLiFFT/policies/CalcIntensityFunctor.hpp"
-#include "libLiFFT/types/View.hpp"
-#include "libLiFFT/types/SliceView.hpp"
+#include "liFFT/types/Vec.hpp"
+#include "liFFT/FFT.hpp"
+#include "liFFT/generateData.hpp"
+#include "liFFT/accessors/TransformAccessor.hpp"
+#include "liFFT/accessors/TransposeAccessor.hpp"
+#include "liFFT/types/SymmetricWrapper.hpp"
+#include "liFFT/accessors/StreamAccessor.hpp"
+#include "liFFT/types/AddDimsWrapper.hpp"
+#include "liFFT/policies/CalcIntensityFunctor.hpp"
+#include "liFFT/types/View.hpp"
+#include "liFFT/types/SliceView.hpp"
 #include <iostream>
 #include <fstream>
 

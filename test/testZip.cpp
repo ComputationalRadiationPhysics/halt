@@ -15,9 +15,9 @@
  */
  
 #include "testUtils.hpp"
-#include "libLiFFT/accessors/ZipAccessor.hpp"
-#include "libLiFFT/generateData.hpp"
-#include "libLiFFT/FFT.hpp"
+#include "liFFT/accessors/ZipAccessor.hpp"
+#include "liFFT/generateData.hpp"
+#include "liFFT/FFT.hpp"
 #include "tiffWriter/image.hpp"
 #include "tiffWriter/traitsAndPolicies.hpp"
 #include <boost/test/unit_test.hpp>

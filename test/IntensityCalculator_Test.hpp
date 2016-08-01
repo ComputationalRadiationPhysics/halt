@@ -16,8 +16,8 @@
  
 #pragma once
 
-#include "libLiFFT/policies/IntensityCalculator.hpp"
-#include "libLiFFT/policies/GetNumElements.hpp"
+#include "liFFT/policies/IntensityCalculator.hpp"
+#include "liFFT/policies/GetNumElements.hpp"
 
 void testIntensityCalculator()
 {

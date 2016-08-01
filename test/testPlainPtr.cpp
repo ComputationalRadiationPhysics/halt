@@ -15,11 +15,11 @@
  */
  
 #include "testUtils.hpp"
-#include "libLiFFT/types/Complex.hpp"
-#include "libLiFFT/types/Real.hpp"
-#include "libLiFFT/mem/PlainPtrWrapper.hpp"
-#include "libLiFFT/FFT.hpp"
-#include "libLiFFT/policies/Copy.hpp"
+#include "liFFT/types/Complex.hpp"
+#include "liFFT/types/Real.hpp"
+#include "liFFT/mem/PlainPtrWrapper.hpp"
+#include "liFFT/FFT.hpp"
+#include "liFFT/policies/Copy.hpp"
 #include <boost/test/unit_test.hpp>
 #include <iostream>
 

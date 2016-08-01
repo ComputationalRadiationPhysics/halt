@@ -16,13 +16,13 @@
  
 #pragma once
 
-#include "libLiFFT/mem/DataContainer.hpp"
-#include "libLiFFT/mem/RealValues.hpp"
-#include "libLiFFT/mem/ComplexAoSValues.hpp"
+#include "liFFT/mem/DataContainer.hpp"
+#include "liFFT/mem/RealValues.hpp"
+#include "liFFT/mem/ComplexAoSValues.hpp"
 #ifdef WITH_CUDA
-#include "libLiFFT/libraries/cuFFT/cuFFT.hpp"
+#include "liFFT/libraries/cuFFT/cuFFT.hpp"
 #else
-#include "libLiFFT/libraries/fftw/FFTW.hpp"
+#include "liFFT/libraries/fftw/FFTW.hpp"
 #endif
 
 namespace LiFFTTest{
