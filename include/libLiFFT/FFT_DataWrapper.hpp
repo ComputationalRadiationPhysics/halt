@@ -38,7 +38,7 @@
 namespace LiFFT {
 
     // Fwd decl
-    template< class T1, class T2, class T3, bool t>
+    template< class T1, class T2, class T3, bool t, class T4>
     class FFT;
 
     namespace detail {
@@ -211,7 +211,7 @@ namespace LiFFT {
         {
             m_fullExtents = extents;
         }
-        template< class T1, class T2, class T3, bool t>
+        template< class T1, class T2, class T3, bool t, class T4>
         friend class FFT;
     public:
         FFT_DataWrapper(ParamType data, BaseAccessor acc = BaseAccessor()):
@@ -404,8 +404,16 @@ namespace LiFFT {
         }
     };
 
-    template< class T_FFT_Def, typename T_Base, class T_HasInstance = std::false_type, typename T_BaseAccessor = traits::IdentityAccessor_t<T_Base> >
-    using FFT_InputDataWrapper = FFT_DataWrapper< T_FFT_Def, std::true_type, T_Base, T_HasInstance, T_BaseAccessor >;
+    template< class T_FFT_Def, // FFT_Definition (FFT attributes)
+              typename T_Base, // PlainPtrWrapper, (File|Data)Container, ..
+              class T_HasInstance = std::false_type,
+              typename T_BaseAccessor = traits::IdentityAccessor_t<T_Base>
+              >
+    using FFT_InputDataWrapper = FFT_DataWrapper< T_FFT_Def,
+                                                  std::true_type,
+                                                  T_Base,
+                                                  T_HasInstance,
+                                                  T_BaseAccessor >;
 
     template< class T_FFT_Def, typename T_Base, class T_HasInstance = std::false_type, typename T_BaseAccessor = traits::IdentityAccessor_t<T_Base> >
     using FFT_OutputDataWrapper = FFT_DataWrapper< T_FFT_Def, std::false_type, T_Base, T_HasInstance, T_BaseAccessor >;

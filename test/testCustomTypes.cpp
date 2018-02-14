@@ -22,7 +22,7 @@
 #include "libLiFFT/FFT.hpp"
 #include "Volume.hpp"
 #include "libLiFFT/accessors/VolumeAccessor.hpp"
-#ifndef WITH_CUDA
+#if !defined(WITH_CUDA) && !defined(WITH_OPENCL)
 #   include "libLiFFT/libraries/fftw/fftw3Include.h"
 #endif
 #include "libLiFFT/generateData.hpp"
@@ -63,7 +63,7 @@ namespace LiFFT {
             using type = T; // or define this in MyComplex itself
         };
 
-#ifndef WITH_CUDA
+#if !defined(WITH_CUDA) && !defined(WITH_OPENCL)
         template<>
         struct IsComplex< fftw_complex >: std::true_type{};
 
@@ -94,7 +94,7 @@ namespace LiFFTTest {
     }
 
     using ComplexVol     = Volume< MyComplex<TestPrecision> >;
-#ifndef WITH_CUDA
+#if !defined(WITH_CUDA) && !defined(WITH_OPENCL)
     using ComplexVolFFTW = Volume< std::conditional_t<std::is_same<TestPrecision, float>::value, fftwf_complex, fftw_complex > >;
 #else
     using ComplexVolFFTW = ComplexVol;

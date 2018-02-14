@@ -21,6 +21,8 @@
 #include "libLiFFT/mem/ComplexAoSValues.hpp"
 #ifdef WITH_CUDA
 #include "libLiFFT/libraries/cuFFT/cuFFT.hpp"
+#elif defined(WITH_OPENCL)
+#include "libLiFFT/libraries/clFFT/clFFT.hpp"
 #else
 #include "libLiFFT/libraries/fftw/FFTW.hpp"
 #endif
@@ -42,6 +44,8 @@ namespace LiFFTTest{
 
     #ifdef WITH_CUDA
     using TestLibrary = LiFFT::libraries::cuFFT::CuFFT<>;
+    #elif defined(WITH_OPENCL)
+    using TestLibrary = LiFFT::libraries::clFFT::ClFFTNoContextAPI;
     #else
     using TestLibrary = LiFFT::libraries::fftw::FFTW<>;
     #endif

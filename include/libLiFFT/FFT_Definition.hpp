@@ -21,6 +21,7 @@
 #include "libLiFFT/c++14_types.hpp"
 #include "libLiFFT/util.hpp"
 #include "libLiFFT/FFT_DataWrapper.hpp"
+#include "libLiFFT/FFT_LibPtrWrapper.hpp"
 #include "libLiFFT/FFT_InplaceOutput.hpp"
 #include "libLiFFT/types/View.hpp"
 #include "libLiFFT/mem/DataContainer.hpp"
@@ -284,6 +285,88 @@ namespace LiFFT {
                         negate< std::is_lvalue_reference<T_Base> >,
                         std::remove_reference_t<T_BaseAccessor>
                     >(std::forward<T_Base>(base), fullSizeLastDim, std::forward<T_BaseAccessor>(acc));
+        }
+
+        template<typename T_LibPtr, typename T_Extents>
+        static FFT_InputLibPtrWrapper<FFT_Definition,
+                                      std::remove_reference_t<T_LibPtr>,
+                                      FFT_Definition::numDims,
+                                      FFT_Definition::isComplexInput,
+                                      FFT_Definition::PrecisionType
+            >
+        wrapInputLibPtr(T_LibPtr&& libptr, T_Extents&& extents)
+        {
+            return FFT_InputLibPtrWrapper<
+                FFT_Definition,
+                std::remove_reference_t<T_LibPtr>,
+                FFT_Definition::numDims,
+                FFT_Definition::isComplexInput,
+                FFT_Definition::PrecisionType
+                >
+                (std::forward<T_LibPtr>(libptr),
+                 std::forward<T_Extents>(extents));
+        }
+
+        template<typename T_LibPtr, typename T_Extents>
+        static FFT_OutputLibPtrWrapper<FFT_Definition,
+                                       std::remove_reference_t<T_LibPtr>,
+                                       FFT_Definition::numDims,
+                                       FFT_Definition::isComplexOutput,
+                                       FFT_Definition::PrecisionType
+            >
+        wrapOutputLibPtr(T_LibPtr&& libptr, T_Extents&& extents)
+        {
+            return FFT_OutputLibPtrWrapper<
+                FFT_Definition,
+                std::remove_reference_t<T_LibPtr>,
+                FFT_Definition::numDims,
+                FFT_Definition::isComplexOutput,
+                FFT_Definition::PrecisionType
+                >
+                (std::forward<T_LibPtr>(libptr),
+                 std::forward<T_Extents>(extents));
+        }
+
+        template<typename T_LibPtr, typename T_Extents>
+        static FFT_InputLibPtrWrapper<FFT_Definition,
+                                      std::remove_reference_t<T_LibPtr>,
+                                      FFT_Definition::numDims,
+                                      FFT_Definition::isComplexInput,
+                                      FFT_Definition::PrecisionType
+            >
+        wrapInputLibPtr(T_LibPtr&& libptr, unsigned fullSizeLastDim, T_Extents&& extents)
+        {
+            return FFT_InputLibPtrWrapper<
+                FFT_Definition,
+                std::remove_reference_t<T_LibPtr>,
+                FFT_Definition::numDims,
+                FFT_Definition::isComplexInput,
+                FFT_Definition::PrecisionType
+                >
+                (std::forward<T_LibPtr>(libptr),
+                 fullSizeLastDim,
+                 std::forward<T_Extents>(extents));
+        }
+
+        template<typename T_LibPtr, typename T_Extents>
+        static FFT_OutputLibPtrWrapper<FFT_Definition,
+                                       std::remove_reference_t<T_LibPtr>,
+                                       FFT_Definition::numDims,
+                                       FFT_Definition::isComplexOutput,
+                                       FFT_Definition::PrecisionType
+            >
+        wrapOutputLibPtr(T_LibPtr&& libptr, unsigned fullSizeLastDim, T_Extents&& extents)
+        {
+            return FFT_OutputLibPtrWrapper<
+                FFT_Definition,
+                std::remove_reference_t<T_LibPtr>,
+                FFT_Definition::numDims,
+                FFT_Definition::isComplexOutput,
+                FFT_Definition::PrecisionType
+                >
+                (std::forward<T_LibPtr>(libptr),
+                 fullSizeLastDim,
+                 std::forward<T_Extents>(extents));
         }
 
         /**

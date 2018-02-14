@@ -99,6 +99,9 @@ namespace cuFFT {
 
         case CUFFT_INCOMPLETE_PARAMETER_LIST:
             return "CUFFT_INCOMPLETE_PARAMETER_LIST";
+
+        case CUFFT_NOT_SUPPORTED:
+          return "CUFFT_NOT_SUPPORTED";
         }
         return "<unknown>";
     }

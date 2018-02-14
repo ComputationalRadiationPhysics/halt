@@ -34,7 +34,7 @@ macro(CheckAndAddFlag flag)
 endmacro()
 
 project(libLiFFT)
-cmake_minimum_required(VERSION 2.8.0)
+cmake_minimum_required(VERSION 3.1)
 
 set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} $ENV{HOME}/Software/tiff $ENV{HOME}/Software/FFTW)
 if(NOT CMAKE_BUILD_TYPE)
@@ -50,25 +50,53 @@ set(LIBS ${LIBS} ${TIFF_LIBRARIES})
 include_directories(${TIFF_INCLUDE_DIR})
 
 ###############################################################################
+# OpenCL+clFFT
+###############################################################################
+find_package(OpenCL)
+if(OpenCL_FOUND)
+  find_package(clFFT)
+  set(LiFFT_ENABLE_OPENCL ${CLFFT_FOUND} CACHE BOOL "Use OpenCL/clFFT")
+  if(CLFFT_FOUND AND LiFFT_ENABLE_OPENCL)
+    message(">> OpenCL/clFFT enabled.")
+    set(LIBS ${LIBS} ${CLFFT_LIBRARIES} ${OpenCL_LIBRARIES})
+    include_directories(${OpenCL_INCLUDE_DIRS} ${CLFFT_INCLUDE_DIRS})
+  endif()
+endif()
+
+###############################################################################
 # CUDA
 ###############################################################################
 find_package(CUDA)
 set(LiFFT_ENABLE_CUDA ${CUDA_FOUND} CACHE BOOL "Use CUDA")
-set(CUDA_PROPAGATE_HOST_FLAGS OFF)
-list(APPEND CUDA_NVCC_FLAGS_RELEASE "-O3 -DNDEBUG")
-list(APPEND CUDA_NVCC_FLAGS_DEBUG "-O0 -g")
-# Older cmakes used the default compiler, not the CMAKE C compiler
-if(${CMAKE_VERSION} VERSION_LESS 2.8.10)
+if(CUDA_FOUND AND LiFFT_ENABLE_CUDA)
+  if(LiFFT_ENABLE_OPENCL)
+    message(FATAL_ERROR "cuFFT as well as clFFT have been found and you have enabled both of them, please use e.g. -DLiFFT_ENABLE_CUDA=0 -DLiFFT_ENABLE_OPENCL=1.")
+  endif()
+  list(APPEND CUDA_NVCC_FLAGS_RELEASE "-O3 -DNDEBUG")
+  list(APPEND CUDA_NVCC_FLAGS_DEBUG "-O0 -g")
+  # Older cmakes used the default compiler, not the CMAKE C compiler
+  if(${CMAKE_VERSION} VERSION_LESS 2.8.10)
     list(APPEND CUDA_NVCC_FLAGS "-ccbin ${CMAKE_C_COMPILER}")
-endif()
+  endif()
+  # http://stackoverflow.com/questions/34996295/trying-to-get-cuda-7-5-to-work-with-gcc-5-x
+  if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU" AND ${CUDA_VERSION_STRING} EQUAL "7.5")
+    if (NOT CMAKE_CXX_COMPILER_VERSION VERSION_LESS 5.0)
+      list(APPEND CUDA_NVCC_FLAGS "-D_MWAITXINTRIN_H_INCLUDED")
+      message(WARNING "CUDA 7.5 and gcc5+ probably will fail to compile liFFT/cufft, try gcc4.8.2.")
+    endif()
+  endif()
+  set(CUDA_PROPAGATE_HOST_FLAGS OFF)
+endif(CUDA_FOUND AND LiFFT_ENABLE_CUDA)
+
 
 ###############################################################################
 # FFTW
 ###############################################################################
-if(CUDA_FOUND AND LiFFT_ENABLE_CUDA)
-    find_package(FFTW)
+if((CUDA_FOUND AND LiFFT_ENABLE_CUDA)
+   OR (CLFFT_FOUND AND LiFFT_ENABLE_OPENCL))
+ find_package(FFTW)
 else()
-    find_package(FFTW REQUIRED)
+  find_package(FFTW REQUIRED)
 endif()
 if(FFTW_FOUND)
     set(LIBS ${LIBS} ${FFTW_LIB} ${FFTW_F_LIB})
@@ -106,8 +134,11 @@ if(CUDA_FOUND AND LiFFT_ENABLE_CUDA)
     cuda_add_executable(reportVolumes reportVolumes/main.cu)
     CUDA_ADD_CUFFT_TO_TARGET(reportVolumes)
 else()
-	add_executable(fftTiffImg fftTiffImg/main.cpp)
-	add_executable(reportVolumes reportVolumes/main.cpp)
+    if(CLFFT_FOUND AND LiFFT_ENABLE_OPENCL)
+      add_definitions(-DWITH_OPENCL)
+    endif()
+    add_executable(fftTiffImg fftTiffImg/main.cpp)
+    add_executable(reportVolumes reportVolumes/main.cpp)
 endif()
 
 add_executable(tiff2PDF tiff2Pdf/tiff2pdf.cpp)

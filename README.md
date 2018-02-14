@@ -9,6 +9,7 @@ The currently implemented libraries are:
 
 1. FFTW
 2. CuFFT
+3. [ClFFT](https://github.com/ComputationalRadiationPhysics/liFFT/pull/26)
 
 For convenience it also contains a generic interface on top of libTIFF to read and write to the following sorts of Tiff images:
 
@@ -53,26 +54,26 @@ There are a couple of example applications that can be used as a reference for i
 - The result can be accessed via the output container. Note that for inplace transforms the output container contains only a reference to the input container, so it must not get out of scope before you are finished accessing the output.
 
 A good example is the code from fftTiffImg:
-
-    void
-    do2D_FFT(const string& inFilePath, const string& outFilePath)
-    {
-        using namespace LiFFT;
-        using FFT = FFT_2D_R2C_F<>;
-        auto input = FFT::wrapInput(tiffWriter::FloatImage<>(inFilePath, false));
-        auto output = FFT::createNewOutput(input);
-        auto fft = makeFFT<FFT_LIB, false>(input, output);
-        input.getBase().load();
-        fft(input, output);
-        tiffWriter::FloatImage<> outImg(outFilePath, input.getBase().getWidth(), input.getBase().getHeight());
-        auto fullOutput = types::makeSymmetricWrapper(output, input.getExtents()[1]);
-        auto transformAcc = accessors::makeTransposeAccessor(
-                                accessors::makeTransformAccessorFor(policies::CalcIntensityFunc(), fullOutput)
-                            );
-        policies::copy(fullOutput, outImg, transformAcc);
-        outImg.save();
-    }
-    
+```C++
+void
+do2D_FFT(const string& inFilePath, const string& outFilePath)
+{
+    using namespace LiFFT;
+    using FFT = FFT_2D_R2C_F<>;
+    auto input = FFT::wrapInput(tiffWriter::FloatImage<>(inFilePath, false));
+    auto output = FFT::createNewOutput(input);
+    auto fft = makeFFT<FFT_LIB, false>(input, output);
+    input.getBase().load();
+    fft(input, output);
+    tiffWriter::FloatImage<> outImg(outFilePath, input.getBase().getWidth(), input.getBase().getHeight());
+    auto fullOutput = types::makeSymmetricWrapper(output, input.getExtents()[1]);
+    auto transformAcc = accessors::makeTransposeAccessor(
+                            accessors::makeTransformAccessorFor(policies::CalcIntensityFunc(), fullOutput)
+                        );
+    policies::copy(fullOutput, outImg, transformAcc);
+    outImg.save();
+}
+```    
 # Usage notes
 
 - The design relies on containers, accessors and indices:

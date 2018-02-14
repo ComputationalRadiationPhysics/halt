@@ -21,6 +21,7 @@
 #include "libLiFFT/types/Vec.hpp"
 #include "libLiFFT/types/Real.hpp"
 #include "libLiFFT/types/Complex.hpp"
+#include "libLiFFT/types/LibPtr.hpp"
 #include "libLiFFT/util.hpp"
 #include "libLiFFT/policies/SafePtrCast.hpp"
 #include "libLiFFT/accessors/ArrayAccessor.hpp"
@@ -120,23 +121,39 @@ namespace mem {
         using IntegralType = traits::IntegralType_t<T>;
         using type = std::conditional_t< T_isComplex, types::Complex<IntegralType>, types::Real<IntegralType> >;
         static_assert(std::is_floating_point<T>::value || std::is_same<T, type>::value,
-                "Only floating point, Real or Complex values are allowed!");
+        "Only floating point, Real or Complex values are allowed!");
     };
+
     template< bool T_isComplex, typename T >
     using RealOrComplex_t = typename RealOrComplex< T_isComplex, T >::type;
 
 
-    // Following are the convenience functions for wrapping pointers
-
-    template< bool T_isComplex, bool T_isDevicePtr = false, typename T = float, unsigned numDims = 1, typename U >
-    PlainPtrWrapper< UnsignedConst<numDims>, RealOrComplex_t< T_isComplex, T >, std::false_type, BoolConst<T_isDevicePtr> >
+    template< bool T_isComplex,
+              bool T_isDevicePtr = false,
+              typename T = float,
+              unsigned numDims = 1, typename U >
+    PlainPtrWrapper< UnsignedConst<numDims>,
+                     RealOrComplex_t< T_isComplex, T >,
+                     std::false_type,
+                     BoolConst<T_isDevicePtr> >
     wrapPtr(T* ptr, const types::Vec<numDims, U>& size)
     {
-        return PlainPtrWrapper< UnsignedConst<numDims>, RealOrComplex_t< T_isComplex, T >, std::false_type, BoolConst<T_isDevicePtr> >(ptr, size);
+        return PlainPtrWrapper< UnsignedConst<numDims>,
+                                RealOrComplex_t< T_isComplex, T >,
+                                std::false_type,
+                                BoolConst<T_isDevicePtr> >(ptr, size);
     }
 
-    template< bool T_isComplex, bool T_isDevicePtr = false, typename T = float, unsigned numDims = 1, typename U, typename V >
-    PlainPtrWrapper< UnsignedConst<numDims>, RealOrComplex_t< T_isComplex, T >, std::true_type, BoolConst<T_isDevicePtr> >
+    template< bool T_isComplex,
+              bool T_isDevicePtr = false,
+              typename T = float,
+              unsigned numDims = 1,
+              typename U,
+              typename V >
+    PlainPtrWrapper< UnsignedConst<numDims>,
+                     RealOrComplex_t< T_isComplex, T >,
+                     std::true_type,
+                     BoolConst<T_isDevicePtr> >
     wrapPtrStrided(T* ptr, const types::Vec<numDims, U>& size, const types::Vec<numDims, V>& stride)
     {
         return PlainPtrWrapper< UnsignedConst<numDims>, RealOrComplex_t< T_isComplex, T >, std::true_type, BoolConst<T_isDevicePtr> >(ptr, size, stride);

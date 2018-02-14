@@ -22,6 +22,9 @@
 #include "libLiFFT/policies/GetExtents.hpp"
 #include "libLiFFT/mem/DataContainer.hpp"
 
+#include <boost/math/constants/constants.hpp>
+#include <cmath>
+
 namespace LiFFT {
 
     struct GeneratorAccessor
@@ -70,7 +73,9 @@ namespace LiFFT {
         struct Cosinus{
             const size_t m_middle;
             const T m_factor;
-            Cosinus(size_t period, size_t middle):m_middle(middle), m_factor(2 * M_PI / period){}
+            Cosinus(size_t period, size_t middle)
+              : m_middle(middle),
+                m_factor(2 * boost::math::constants::pi<T>() / period){}
 
             template< class T_Idx >
             T

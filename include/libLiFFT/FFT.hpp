@@ -20,30 +20,16 @@
 
 // Included for convenience, so only one include is required from user code
 #include "libLiFFT/FFT_Definition.hpp"
+#include "libLiFFT/FFT_LibPtrWrapper.hpp"
 #include "libLiFFT/FFT_DataWrapper.hpp"
 #include <boost/mpl/apply.hpp>
+#include <type_traits>
 
 namespace bmpl = boost::mpl;
 
 namespace LiFFT {
 
-    template< class T_Input, class T_Output >
-    class FFT_Interface_Inplace
-    {
-    public:
-        virtual ~FFT_Interface_Inplace(){};
-
-        virtual void operator()(T_Input& inout) = 0;
-    };
-
-    template< class T_Input, class T_Output >
-    class FFT_Interface_Outplace
-    {
-    public:
-        virtual ~FFT_Interface_Outplace(){};
-
-        virtual void operator()(T_Input& input, T_Output& output) = 0;
-    };
+    struct DefaultQueue {};
 
     /**
      * Assembles an FFT
@@ -65,19 +51,23 @@ namespace LiFFT {
             class T_Library,
             typename T_InputWrapper,
             typename T_OutputWrapper,
-            bool T_constructWithReadOnly = true
+            bool T_constructWithReadOnly = true,
+            typename T_Queue = DefaultQueue
             >
-    class FFT:
-            public std::conditional_t<
-                T_InputWrapper::FFT_Def::isInplace,
-                FFT_Interface_Inplace< T_InputWrapper, T_InputWrapper >,
-                FFT_Interface_Outplace< T_InputWrapper, T_OutputWrapper >
-            >
+    class FFT
     {
         using Library = T_Library;
         using Input = T_InputWrapper;
         using Output = T_OutputWrapper;
         static constexpr bool constructWithReadOnly = T_constructWithReadOnly;
+        template<typename T>
+        using EnableIfQueuePresentAndInplace = typename std::enable_if<!std::is_same<T_Queue,DefaultQueue>::value && T_InputWrapper::FFT_Def::isInplace,T>;
+        template<typename T>
+        using EnableIfNoQueueAndInplace = typename std::enable_if<std::is_same<T_Queue,DefaultQueue>::value && T_InputWrapper::FFT_Def::isInplace,T>;
+        template<typename T>
+        using EnableIfQueuePresentAndOutplace = typename std::enable_if<!std::is_same<T_Queue,DefaultQueue>::value && !T_InputWrapper::FFT_Def::isInplace,T>;
+        template<typename T>
+        using EnableIfNoQueueAndOutplace = typename std::enable_if<std::is_same<T_Queue,DefaultQueue>::value && !T_InputWrapper::FFT_Def::isInplace,T>;
 
         using FFT_Def = typename Input::FFT_Def;
         static_assert(std::is_same< FFT_Def, typename Output::FFT_Def>::value, "FFT types of input and output differs");
@@ -87,18 +77,38 @@ namespace LiFFT {
 
         ActLibrary m_lib;
     public:
-        explicit FFT(Input& input, Output& output): m_lib(input, output)
+
+        explicit FFT(Input& input, Output& output)
+        : m_lib(input, output)
         {
             static_assert(!isInplace, "Must not be called for inplace transforms");
         }
 
-        explicit FFT(Input& inOut): m_lib(inOut)
+        explicit FFT(Input& inOut)
+        : m_lib(inOut)
         {
             static_assert(isInplace, "Must not be called for out-of-place transforms");
         }
 
-        FFT(FFT&& obj): m_lib(std::move(obj.m_lib)){}
+        template<typename T=int, typename EnableIfQueuePresentAndOutplace<T>::type=0 >
+        explicit FFT(Input& input, Output& output, T_Queue& queue)
+        : m_lib(input, output, queue)
+        {
+            static_assert(!isInplace, "Must not be called for inplace transforms");
+        }
 
+        template<typename T=int, typename EnableIfQueuePresentAndInplace<T>::type=0 >
+        explicit FFT(Input& inOut, T_Queue& queue)
+        : m_lib(inOut, queue)
+        {
+            static_assert(isInplace, "Must not be called for out-of-place transforms");
+        }
+
+        FFT(FFT&& obj)
+        : m_lib(std::move(obj.m_lib))
+        {}
+
+        template<typename T=int, typename EnableIfNoQueueAndOutplace<T>::type=0 >
         void operator()(Input& input, Output& output)
         {
             static_assert(!isInplace, "Must not be called for inplace transforms");
@@ -112,11 +122,35 @@ namespace LiFFT {
             output.postProcess();
         }
 
+        template<typename T=int, typename EnableIfQueuePresentAndOutplace<T>::type=0 >
+        void operator()(Input& input, Output& output, T_Queue& queue)
+        {
+            static_assert(!isInplace, "Must not be called for inplace transforms");
+            // Set full extents for C2R/R2C (rest is set in constructor)
+            if(FFT_Def::kind == FFT_Kind::Complex2Real)
+                input.setFullExtents(output.getExtents());
+            else if(FFT_Def::kind == FFT_Kind::Real2Complex)
+                output.setFullExtents(input.getExtents());
+            input.preProcess();
+            m_lib(input, output, queue);
+            output.postProcess();
+        }
+
+        template<typename T=int, typename EnableIfNoQueueAndInplace<T>::type=0 >
         void operator()(Input& inout)
         {
             static_assert(isInplace, "Must not be called for out-of-place transforms");
             inout.preProcess();
             m_lib(inout);
+            inout.postProcess();
+        }
+
+        template<typename T=int, typename EnableIfQueuePresentAndInplace<T>::type=0 >
+        void operator()(Input& inout, T_Queue& queue)
+        {
+            static_assert(isInplace, "Must not be called for out-of-place transforms");
+            inout.preProcess();
+            m_lib(inout, queue);
             inout.postProcess();
         }
     };
@@ -143,5 +177,31 @@ namespace LiFFT {
     {
         return FFT< T_Library, T_DataWrapper, T_DataWrapper, T_constructWithReadOnly >(input);
     }
+
+    template<
+        class T_Library,
+        typename T_Queue,
+        bool T_constructWithReadOnly = true,
+        typename T_InputWrapper,
+        typename T_OutputWrapper
+        >
+    FFT< T_Library, T_InputWrapper, T_OutputWrapper, T_constructWithReadOnly, T_Queue >
+    makeFFTInQueue(T_InputWrapper& input, T_OutputWrapper& output, T_Queue& queue)
+    {
+        return FFT< T_Library, T_InputWrapper, T_OutputWrapper, T_constructWithReadOnly, T_Queue >(input, output, queue);
+    }
+
+    template<
+        class T_Library,
+        typename T_Queue,
+        bool T_constructWithReadOnly = true,
+        typename T_DataWrapper
+        >
+    FFT< T_Library, T_DataWrapper, T_DataWrapper, T_constructWithReadOnly, T_Queue >
+    makeFFTInQueue(T_DataWrapper& input, T_Queue& queue)
+    {
+        return FFT< T_Library, T_DataWrapper, T_DataWrapper, T_constructWithReadOnly, T_Queue >(input, queue);
+    }
+
 
 }  // namespace LiFFT

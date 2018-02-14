@@ -15,6 +15,7 @@
  */
  
 #include "testUtils.hpp"
+#include "testDefines.hpp"
 #include "libLiFFT/types/Vec.hpp"
 #include "libLiFFT/FFT.hpp"
 #include "libLiFFT/generateData.hpp"
@@ -28,6 +29,8 @@
 #include "libLiFFT/types/SliceView.hpp"
 #include <iostream>
 #include <fstream>
+// see https://stackoverflow.com/questions/222557/what-uses-are-there-for-placement-new
+#include <memory>
 
 using LiFFT::generateData;
 using namespace LiFFT::generators;
@@ -39,11 +42,25 @@ namespace LiFFTTest {
     BaseC2CInput  baseC2CInput;
     BaseC2COutput baseC2COutput;
 
-    using FFT_R2C = LiFFT::FFT_Definition< LiFFT::FFT_Kind::Real2Complex, testNumDims, TestPrecision, std::true_type>;
-    using FFT_C2C = LiFFT::FFT_Definition< LiFFT::FFT_Kind::Complex2Complex, testNumDims, TestPrecision, std::true_type>;
+    using FFT_R2C_Definition = LiFFT::FFT_Definition< LiFFT::FFT_Kind::Real2Complex,
+                                                      testNumDims,
+                                                      TestPrecision,
+                                                      std::true_type>;
+    using FFT_C2C_Definition = LiFFT::FFT_Definition< LiFFT::FFT_Kind::Complex2Complex,
+                                                      testNumDims,
+                                                      TestPrecision,
+                                                      std::true_type>;
+    using FFT_R2C = LiFFT::FFT<TestLibrary,
+                               decltype(FFT_R2C_Definition::wrapInput(baseR2CInput)),
+                               decltype(FFT_R2C_Definition::wrapOutput(baseR2COutput)),
+                               false>;
+    using FFT_C2C = LiFFT::FFT<TestLibrary,
+                               decltype(FFT_C2C_Definition::wrapInput(baseC2CInput)),
+                               decltype(FFT_C2C_Definition::wrapOutput(baseC2COutput)),
+                               false>;
 
-    LiFFT::FFT_Interface_Outplace<decltype(FFT_R2C::wrapInput(baseR2CInput)), decltype(FFT_R2C::wrapOutput(baseR2COutput))>* fftR2C;
-    LiFFT::FFT_Interface_Outplace<decltype(FFT_C2C::wrapInput(baseC2CInput)), decltype(FFT_C2C::wrapOutput(baseC2COutput))>* fftC2C;
+    FFT_R2C* fftR2C;
+    FFT_C2C* fftC2C;
 
     /**
      * Writes nD data to a file as strings
@@ -84,18 +101,14 @@ namespace LiFFTTest {
         baseC2COutput.allocData(size);
 
         {
-            auto input = FFT_R2C::wrapInput(baseR2CInput);
-            auto output = FFT_R2C::wrapOutput(baseR2COutput);
-            using FFT = decltype(LiFFT::makeFFT<TestLibrary, false>(input, output));
-            fftR2C = static_cast<decltype(fftR2C)>(malloc(sizeof(FFT)));
-            new(fftR2C)auto(FFT(input, output));
+            auto input = FFT_R2C_Definition::wrapInput(baseR2CInput);
+            auto output = FFT_R2C_Definition::wrapOutput(baseR2COutput);
+            fftR2C = new FFT_R2C(input, output);
         }
         {
-            auto input = FFT_C2C::wrapInput(baseC2CInput);
-            auto output = FFT_C2C::wrapOutput(baseC2COutput);
-            using FFT = decltype(LiFFT::makeFFT<TestLibrary, false>(input, output));
-            fftC2C = static_cast<decltype(fftC2C)>(malloc(sizeof(FFT)));
-            new(fftC2C)auto(FFT(input, output));
+            auto input = FFT_C2C_Definition::wrapInput(baseC2CInput);
+            auto output = FFT_C2C_Definition::wrapOutput(baseC2COutput);
+            fftC2C = new FFT_C2C(input, output);
         }
     }
 
@@ -105,8 +118,8 @@ namespace LiFFTTest {
         baseR2COutput.freeData();
         baseC2CInput.freeData();
         baseC2COutput.freeData();
-        free(fftR2C);
-        free(fftC2C);
+        delete fftR2C;
+        delete fftC2C;
     }
 
     void visualizeBase()
@@ -153,15 +166,15 @@ namespace LiFFTTest {
 
     void execBaseR2C()
     {
-        auto input  = FFT_R2C::wrapInput( baseR2CInput);
-        auto output = FFT_R2C::wrapOutput(baseR2COutput);
+        auto input  = FFT_R2C_Definition::wrapInput( baseR2CInput);
+        auto output = FFT_R2C_Definition::wrapOutput(baseR2COutput);
         (*fftR2C)(input, output);
     }
 
     void execBaseC2C()
     {
-        auto input  = FFT_C2C::wrapInput( baseC2CInput);
-        auto output = FFT_C2C::wrapOutput(baseC2COutput);
+        auto input  = FFT_C2C_Definition::wrapInput( baseC2CInput);
+        auto output = FFT_C2C_Definition::wrapOutput(baseC2COutput);
         (*fftC2C)(input, output);
     }
 
