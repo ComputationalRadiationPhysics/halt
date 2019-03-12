@@ -35,7 +35,7 @@ def drawGraphic(data, figure, xLabel = None, yLabel = None, title = None, logPlo
         norm = None
         
     subplot = figure.add_subplot(111)
-    pic = subplot.imshow(data, norm=norm, aspect="auto", cmap=cm.spectral, extent=extent)
+    pic = subplot.imshow(data, norm=norm, aspect="auto", cmap=cm.nipy_spectral, extent=extent)
 
     if xLabel:
         plt.xlabel(xLabel, fontsize=20)
