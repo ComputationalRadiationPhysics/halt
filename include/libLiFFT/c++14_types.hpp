@@ -16,6 +16,12 @@
  
 #pragma once
 
+#include <type_traits>
+
+// The following are workarounds specifically for C++11 and cause
+// compile issues for other standards
+#if __cplusplus == 201103L
+
 namespace std {
 
     template< bool B, class T = void >
@@ -67,3 +73,5 @@ namespace std {
     }
 
 }  // namespace std
+
+#endif
